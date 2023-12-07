@@ -6,7 +6,7 @@ const Toolbar = () => {
       <div className="container-fluid">
         <ul className="navbar-nav mr-auto flex-row gap-2 flex-nowrap">
           <li className="nav-item">
-            <NavLink to="/pages/home" className="nav-link">Home</NavLink>
+            <NavLink to="/pages/about" className="nav-link">Home</NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="/pages/about" className="nav-link">About</NavLink>
@@ -15,7 +15,7 @@ const Toolbar = () => {
             <NavLink to="/pages/contacts" className="nav-link">Contacts</NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/pages/divisions" className="nav-link">Divisions</NavLink>
+            <NavLink to="/pages/divisios" className="nav-link">Divisions</NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="/" className="nav-link">Admin</NavLink>

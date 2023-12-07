@@ -6,3 +6,5 @@ export interface FormPages{
 }
 
 export type PageContent = Omit<FormPages, 'id', 'category'>;
+
+export type Category = Omit<FormPages, 'category', 'content'>;

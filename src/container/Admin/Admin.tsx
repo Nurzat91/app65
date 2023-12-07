@@ -20,7 +20,7 @@ const Admin = () => {
       if (param.id) {
         try {
           setLoading(true);
-          const response = await axiosApi.get(`pages/${param.id}.json`);
+          const response = await axiosApi.get(`/pages/${param.id}.json`);
           if (response.status === 200) {
             const postData: FormPages = response.data;
             setFormPages(postData);
@@ -51,17 +51,12 @@ const Admin = () => {
       const { category, title, content } = formPages;
 
       const dataToSend = {
-        [category]: {
-          title,
-          content,
-        },
+        title,
+        content,
       };
 
-      if (param.id) {
-        await axiosApi.put(`/pages/${param.id}.json`, dataToSend);
-      } else {
-        await axiosApi.post('pages.json', dataToSend);
-      }
+      await axiosApi.post(`/pages/${category}.json`, dataToSend);
+
       navigate('/');
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -69,6 +64,7 @@ const Admin = () => {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="row mt-2">
