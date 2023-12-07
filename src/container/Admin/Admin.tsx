@@ -20,7 +20,7 @@ const Admin = () => {
         if (formPages.category) {
           setLoading(true);
           const responseData = await axiosApi.get(`/pages/${formPages.category}.json`);
-          const { title, content } = responseData.data;
+          const { title, content } = responseData.data[Object.keys(responseData.data)[0]];
           setFormPages((prevState) => ({
             ...prevState,
             title,
@@ -67,7 +67,7 @@ const Admin = () => {
           <Spinner/>
         ) : (
           <form onSubmit={onFormSubmit}>
-            <h3>Add new post</h3>
+            <h3>Edit pages</h3>
             <div className="form-group">
               <h6>Select page</h6>
               <select
