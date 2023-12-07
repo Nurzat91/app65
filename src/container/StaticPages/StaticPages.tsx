@@ -15,7 +15,6 @@ const StaticPages = () => {
       setLoading(true);
       const responseData = await axiosApi.get(`${url}.json`);
 
-      console.log(responseData.data)
       setPageContent(responseData.data);
     } catch (error) {
       console.error('Error fetching page content:', error);

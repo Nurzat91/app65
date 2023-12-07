@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Spinner from "../../components/Spinner/Spinner";
 import {FormPages} from "../../types";
 import {useNavigate} from "react-router-dom";
@@ -14,7 +14,28 @@ const Admin = () => {
     content: '',
   });
 
+  useEffect(() => {
+    const fetchPageData = async () => {
+      try {
+        if (formPages.category) {
+          setLoading(true);
+          const responseData = await axiosApi.get(`/pages/${formPages.category}.json`);
+          const { title, content } = responseData.data;
+          setFormPages((prevState) => ({
+            ...prevState,
+            title,
+            content,
+          }));
+        }
+      } catch (error) {
+        console.error('Error fetching page data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    void fetchPageData();
+  }, [formPages.category]);
   const onChanged = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
     setFormPages((prevState) => ({
@@ -28,14 +49,8 @@ const Admin = () => {
     try {
       setLoading(true);
       const { category, title, content } = formPages;
-
-      const dataToSend = {
-        title,
-        content,
-      };
-
+      const dataToSend = { title, content };
       await axiosApi.post(`/pages/${category}.json`, dataToSend);
-
       navigate('/');
     } catch (error) {
       console.error('Error submitting form:', error);
