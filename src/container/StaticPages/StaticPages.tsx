@@ -1,58 +1,47 @@
-import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Category, PageContent } from "../../types";
+import {useLocation} from "react-router-dom";
+import {useCallback, useEffect, useState} from "react";
+import {PageContent} from "../../types";
 import Spinner from "../../components/Spinner/Spinner";
+import axiosApi from "../../axiosApi";
 
 const StaticPages = () => {
-  const categories: Category[] = [
-    { title: 'Home', id: 'home' },
-    { title: 'About', id: 'about' },
-    { title: 'Contacts', id: 'contacts' },
-    { title: 'Divisions', id: 'divisions' },
-  ];
-  const { category } = useParams<{ category: string }>();
+
   const [pageContent, setPageContent] = useState<PageContent | null>(null);
   const [loading, setLoading] = useState(false);
+  const url = useLocation().pathname;
+
+  const fetchPageContent = useCallback(async () => {
+    try {
+      setLoading(true);
+      const responseData = await axiosApi.get(`${url}.json`);
+
+      console.log(responseData.data)
+      setPageContent(responseData.data);
+    } catch (error) {
+      console.error('Error fetching page content:', error);
+    }finally {
+      setLoading(false);
+    }
+  }, [url]);
 
   useEffect(() => {
-    const fetchPageContent = async () => {
-      try {
-        setLoading(true);
-        const responseData = await axios.get(`/pages/${category}.json`);
-        if (responseData.status === 200) {
-          setPageContent(responseData.data);
-          console.log(responseData.data);
-        } else {
-          throw new Error('ERROR ' + responseData.status);
-        }
-      } catch (error) {
-        console.error('Error fetching page content:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
     void fetchPageContent();
-  }, [category]);
+  }, [fetchPageContent, url]);
 
   return (
     <div>
-      <ul className="category-list">
-        {categories.map((cat) => (
-          <li key={cat.id}>
-            <Link to={`/pages/${cat.id}`} className="category-link">{cat.title}</Link>
-          </li>
-        ))}
-      </ul>
-
       {loading ? (
         <Spinner />
       ) : (
         <>
           {pageContent && (
             <>
-              <h1>{pageContent.title}</h1>
-              <p>{pageContent.content}</p>
+              {Object.keys(pageContent).map((key) => (
+                <div className="card m-3 p-2" key={key}>
+                  <h3>{pageContent[key]?.title}</h3>
+                  <p><strong>Content: </strong>{pageContent[key]?.content}</p>
+                </div>
+              ))}
             </>
           )}
         </>
@@ -62,3 +51,4 @@ const StaticPages = () => {
 };
 
 export default StaticPages;
+

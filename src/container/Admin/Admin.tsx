@@ -1,40 +1,19 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import Spinner from "../../components/Spinner/Spinner";
 import {FormPages} from "../../types";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import axiosApi from "../../axiosApi";
 
 const Admin = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  // const [selectCategory, setSelectCategory] = useState('');
   const[formPages, setFormPages] = useState<FormPages>({
     id: Math.random().toString(),
     category: '',
     title: '',
     content: '',
   });
-  const param = useParams() as { id: string };
-  useEffect(() => {
-    const fetchData = async () => {
-      if (param.id) {
-        try {
-          setLoading(true);
-          const response = await axiosApi.get(`/pages/${param.id}.json`);
-          if (response.status === 200) {
-            const postData: FormPages = response.data;
-            setFormPages(postData);
-            console.log(setFormPages);
-          }
-        } catch (error) {
-          console.error('Error fetching post:', error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-    void fetchData();
-  }, [param.id]);
+
 
   const onChanged = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = event.target;

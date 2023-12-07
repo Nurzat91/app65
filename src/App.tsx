@@ -10,7 +10,7 @@ function App() {
       <header><Toolbar/></header>
       <main className="container">
         <Routes>
-          <Route path="/" element={<StaticPages/>}/>
+          <Route path="/" element={<Admin/>}/>
           <Route path="/admin" element={<Admin/>}/>
           <Route path="/pages/:pageName" element={<StaticPages/>}/>
         </Routes>
